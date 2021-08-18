@@ -75,3 +75,5 @@ app.post("/translate",cache, translate);
 app.listen(PORT, () => {
   console.log("Server started at " + PORT);
 });
+
+module.exports = app;

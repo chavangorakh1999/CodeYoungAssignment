@@ -1,36 +1,30 @@
-const request = require('supertest');
+const request = require("supertest");
 // app is supposed to point to the app.js file
-const express = require('express');
+const express = require("express");
+const app = require("./server");
 
-const app = express();
+const data={message:'Hello',lang:'hi'}
 
-
-
-describe('POST /translate',()=>{
-  describe('Sendig data to translate',() =>{
-      test('Should response with custom body',async ()=>{
-        const response= await request(app).post('/translate').send({
-          message:"Hello",
-          lang:"en"
-        })
-        expect((res)=>{
-          res.body="Hello";
+describe("POST /translate", () => {
+  describe("Sendig data to translate", () => {
+    it("Posting data to translate",async () => {
+      return await request(app)
+        .post("/translate").send(data)
+        .expect(200)
+        .then((response) => {
+          expect(response.text).toEqual('नमस्ते')
         });
-      })
-      test('Should response with custom body',async ()=>{
-        const response= await request(app).post('/translate').send({
-          message:"Good Morning",
-          lang:"mr"
-        })
-        expect((res)=>{
-          res.body="शुभ प्रभात";
-        });
-      })
-  })
-  
-  
-  describe('Sendig data to translate',() =>{
-    
-  })
-})
+    });
 
+    it("fetching from cache",async () => {
+      return await request(app)
+        .post("/translate").send({message:'Hello',lang:'mr'})
+        .expect(200)
+        .then((response) => {
+          expect(response.text).toEqual('नमस्कार')
+        });
+    });
+  });
+
+  describe("Sendig data to translate", () => {});
+});
