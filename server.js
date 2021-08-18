@@ -41,6 +41,7 @@ async function translate(req, res, next) {
     for (let i = 0; i < langArray.length; i++) {
       let data = langArray[i];
       googleTranslate.translate(message, data, function (err, translation) {
+       //if data matches requested lang then send the data else cache it to db
         if(data===lang){
           res.send(translation.translatedText);
         }
@@ -52,7 +53,7 @@ async function translate(req, res, next) {
   }
 }
 
-
+//Checking if lang data is stored in cache 
 function cache(req, res, next) {
   const lang = req.body.lang;
 
