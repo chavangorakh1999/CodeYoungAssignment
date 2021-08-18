@@ -43,6 +43,7 @@ async function translate(req, res, next) {
       googleTranslate.translate(message, data, function (err, translation) {
        //if data matches requested lang then send the data else cache it to db
         if(data===lang){
+          // res.sendStatus(200);
           res.send(translation.translatedText);
         }
         client.setex(data, 3600, translation.translatedText);
